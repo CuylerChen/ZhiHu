@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TMItemView" customModule="ZhiHu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEl-g8-9jD">
+                    <rect key="frame" x="545" y="13" width="15" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="15" id="bj1-A7-moV"/>
+                        <constraint firstAttribute="height" constant="18" id="dma-Ru-6YQ"/>
+                    </constraints>
+                    <state key="normal" image="Menu_Follow"/>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JH7-O0-0SG">
+                    <rect key="frame" x="5" y="12" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="CB5-2H-PR8"/>
+                        <constraint firstAttribute="width" constant="20" id="JhL-Gy-kVD"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8hl-lt-TKX">
+                    <rect key="frame" x="29" y="12" width="516" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="CEl-g8-9jD" firstAttribute="leading" secondItem="8hl-lt-TKX" secondAttribute="trailing" id="7DM-DB-qnX"/>
+                <constraint firstAttribute="trailing" secondItem="CEl-g8-9jD" secondAttribute="trailing" constant="40" id="K13-Jc-JeK"/>
+                <constraint firstAttribute="bottom" secondItem="8hl-lt-TKX" secondAttribute="bottom" constant="12" id="LaY-lo-ge2"/>
+                <constraint firstItem="JH7-O0-0SG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="YXi-7D-IES"/>
+                <constraint firstAttribute="bottom" secondItem="JH7-O0-0SG" secondAttribute="bottom" constant="12" id="c9F-dZ-1Re"/>
+                <constraint firstItem="8hl-lt-TKX" firstAttribute="leading" secondItem="JH7-O0-0SG" secondAttribute="trailing" constant="4" id="d40-Ba-fWe"/>
+                <constraint firstItem="JH7-O0-0SG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="dXB-sH-07B"/>
+                <constraint firstItem="CEl-g8-9jD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="esG-eM-CNq"/>
+                <constraint firstItem="8hl-lt-TKX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="yUL-j7-tDx"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="menuImaView" destination="JH7-O0-0SG" id="xe1-Zy-Nhc"/>
+                <outlet property="menuTitleLb" destination="8hl-lt-TKX" id="tQL-Wj-vAe"/>
+            </connections>
+            <point key="canvasLocation" x="452" y="266"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Menu_Follow" width="15" height="18"/>
+    </resources>
+</document>
