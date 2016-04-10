@@ -14,7 +14,6 @@
 		47406E5B1CB4FC5700FB2C8D /* ZhiHuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406E5A1CB4FC5700FB2C8D /* ZhiHuTests.swift */; };
 		47406E661CB4FC5700FB2C8D /* ZhiHuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406E651CB4FC5700FB2C8D /* ZhiHuUITests.swift */; };
 		47406E791CB4FE9000FB2C8D /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406E771CB4FE9000FB2C8D /* HomePageViewController.swift */; };
-		47406E7C1CB4FFC600FB2C8D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 47406E7B1CB4FFC600FB2C8D /* Default@2x.png */; };
 		47406E7E1CB5400F00FB2C8D /* StoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406E7D1CB5400F00FB2C8D /* StoryModel.swift */; };
 		47406E811CB54C6D00FB2C8D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406E801CB54C6D00FB2C8D /* UIView+Extension.swift */; };
 		47406E831CB551A600FB2C8D /* HomeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47406E821CB551A600FB2C8D /* HomeViewCell.xib */; };
@@ -38,6 +37,7 @@
 		47406EBA1CB79C9800FB2C8D /* LeftMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47406EB91CB79C9800FB2C8D /* LeftMenuViewController.xib */; };
 		47406EBC1CB79CA000FB2C8D /* TMItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47406EBB1CB79CA000FB2C8D /* TMItemView.xib */; };
 		47406EBE1CB79DC300FB2C8D /* LeftMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47406EBD1CB79DC300FB2C8D /* LeftMenuViewController.swift */; };
+		475FB81D1CBA74A600BBED3C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 475FB81C1CBA74A600BBED3C /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +71,6 @@
 		47406E651CB4FC5700FB2C8D /* ZhiHuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhiHuUITests.swift; sourceTree = "<group>"; };
 		47406E671CB4FC5700FB2C8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47406E771CB4FE9000FB2C8D /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
-		47406E7B1CB4FFC600FB2C8D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../../ZhiHuIcon/Default@2x.png"; sourceTree = "<group>"; };
 		47406E7D1CB5400F00FB2C8D /* StoryModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryModel.swift; sourceTree = "<group>"; };
 		47406E801CB54C6D00FB2C8D /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		47406E821CB551A600FB2C8D /* HomeViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewCell.xib; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		47406EB91CB79C9800FB2C8D /* LeftMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftMenuViewController.xib; sourceTree = "<group>"; };
 		47406EBB1CB79CA000FB2C8D /* TMItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TMItemView.xib; sourceTree = "<group>"; };
 		47406EBD1CB79DC300FB2C8D /* LeftMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuViewController.swift; sourceTree = "<group>"; };
+		475FB81C1CBA74A600BBED3C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B51A7FA51E59E3F239E1B9D9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FA379FED60688DFEEC23E7D7 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -182,7 +182,7 @@
 		47406E731CB4FE3E00FB2C8D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				47406E7B1CB4FFC600FB2C8D /* Default@2x.png */,
+				475FB81C1CBA74A600BBED3C /* Default@2x.png */,
 				47406E451CB4FC5700FB2C8D /* AppDelegate.swift */,
 				47406E4C1CB4FC5700FB2C8D /* Assets.xcassets */,
 				47406E4E1CB4FC5700FB2C8D /* LaunchScreen.storyboard */,
@@ -485,7 +485,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47406E7C1CB4FFC600FB2C8D /* Default@2x.png in Resources */,
+				475FB81D1CBA74A600BBED3C /* Default@2x.png in Resources */,
 				47406E501CB4FC5700FB2C8D /* LaunchScreen.storyboard in Resources */,
 				47406E831CB551A600FB2C8D /* HomeViewCell.xib in Resources */,
 				47406EBA1CB79C9800FB2C8D /* LeftMenuViewController.xib in Resources */,
