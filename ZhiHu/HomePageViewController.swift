@@ -38,18 +38,19 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.mainScrollViewToTop(_:)), name: "TapStatusBar", object: nil)
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubView()
         viewmodel.getLatestStories()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        carouseView.timer.invalidate()
     }
     
     func initSubView() {

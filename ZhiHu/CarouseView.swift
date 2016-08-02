@@ -48,8 +48,28 @@ class CarouseView: UIView,UIScrollViewDelegate {
         pageControl.pageIndicatorTintColor = UIColor.grayColor()
         self.addSubview(pageControl)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CarouseView.TimerPause), name: "CarouseViewTimerPause", object: nil)
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CarouseView.TimerRestore), name: "CarouseViewTimerRestore", object: nil)
+        
     }
     
+    func  TimerPause() {
+        if timer.valid {
+             timer.fireDate = NSDate.distantFuture()
+        }
+    }
+    
+    func TimerRestore() {
+        if timer.valid {
+            timer.fireDate = NSDate.distantPast()
+        }
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     func tap(recognizer:UIGestureRecognizer ) {
         self.delegate?.didSelectItemWithTag((recognizer.view?.tag)!)
