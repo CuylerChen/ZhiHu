@@ -50,10 +50,6 @@ class CarouseView: UIView,UIScrollViewDelegate {
         
     }
     
-    func viewWillDisappear() {
-        timer.invalidate()
-    }
-    
     
     func tap(recognizer:UIGestureRecognizer ) {
         self.delegate?.didSelectItemWithTag((recognizer.view?.tag)!)

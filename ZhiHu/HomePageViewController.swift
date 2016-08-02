@@ -41,10 +41,15 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubView()
         viewmodel.getLatestStories()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        carouseView.timer.invalidate()
     }
     
     func initSubView() {
