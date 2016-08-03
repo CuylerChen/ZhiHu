@@ -48,6 +48,8 @@ class CarouseView: UIView,UIScrollViewDelegate {
         pageControl.pageIndicatorTintColor = UIColor.grayColor()
         self.addSubview(pageControl)
         
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(CarouseView.nextStoryDisplay), userInfo: nil, repeats: true)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CarouseView.TimerPause), name: "CarouseViewTimerPause", object: nil)
         
         
@@ -95,7 +97,9 @@ class CarouseView: UIView,UIScrollViewDelegate {
             tsv.label.setBottom(240)
             tsv.label.attributedText = attStr
         }
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(CarouseView.nextStoryDisplay), userInfo: nil, repeats: true)
+        
+        
+        
     }
     
     func nextStoryDisplay() {

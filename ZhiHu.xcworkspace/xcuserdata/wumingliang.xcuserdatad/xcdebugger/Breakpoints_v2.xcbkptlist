@@ -190,11 +190,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ZhiHu/CarouseView.swift"
-            timestampString = "491839472.297901"
+            timestampString = "491894066.805133"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "updateSubViewsOriginY(_:)"
             landmarkType = "5">
          </BreakpointContent>
