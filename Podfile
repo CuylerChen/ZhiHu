@@ -6,8 +6,9 @@
 platform :ios, '9.0'
 use_frameworks!
 
+target 'ZhiHu' do
+
 pod 'Alamofire'
 pod 'AlamofireImage'
 
-
-
+end
