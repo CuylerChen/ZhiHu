@@ -32,7 +32,9 @@ class WKWebViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        initSubViews()
     }
     
     func initSubViews() {
@@ -40,7 +42,7 @@ class WKWebViewController: UIViewController {
         self.view.addSubview(webView)
       
         let navBar = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 64))
-        navBar.backgroundColor = UIColor.redColor()
+        navBar.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(navBar)
         
         let toolBar = UIView.init(frame: CGRectMake(0, BNCScreenHeight - 43, BNCScreenWidth, 43))
@@ -78,7 +80,9 @@ class WKWebViewController: UIViewController {
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+       
         if keyPath == "storyModel" {
+            
             webView.loadRequest(NSURLRequest.init(URL: NSURL.init(string: viewmodel.share_URL())!))
         }
     }

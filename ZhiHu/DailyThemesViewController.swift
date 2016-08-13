@@ -148,7 +148,7 @@ class DailyThemesViewController: UIViewController,UITableViewDataSource,UITableV
         let model = viewmodel.stories[indexPath.row]
         
         var storiesID = [Int]()
-        for index in 0...viewmodel.stories.count {
+        for index in 0...viewmodel.stories.count-1 {
             let id = viewmodel.stories[index].storyID
             storiesID.append(id)
         }
