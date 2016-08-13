@@ -42,7 +42,8 @@ class WKWebViewController: UIViewController {
         self.view.addSubview(webView)
       
         let navBar = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 64))
-        navBar.backgroundColor = UIColor.whiteColor()
+        navBar.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: 0)
+
         self.view.addSubview(navBar)
         
         let toolBar = UIView.init(frame: CGRectMake(0, BNCScreenHeight - 43, BNCScreenWidth, 43))
