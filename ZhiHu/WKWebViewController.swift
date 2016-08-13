@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import WebKit
 
 class WKWebViewController: UIViewController {
     var viewmodel: StoryContentViewModel!
-    var webView: WKWebView!
+    var webView: UIWebView!
     
     private let  BNCScreenWidth = UIScreen.mainScreen().bounds.size.width
     private let  BNCScreenHeight = UIScreen.mainScreen().bounds.size.height
@@ -38,7 +37,8 @@ class WKWebViewController: UIViewController {
     }
     
     func initSubViews() {
-        webView = WKWebView.init(frame: CGRectMake(0, 0, BNCScreenWidth, BNCScreenHeight - 43))
+
+        webView = UIWebView.init(frame: CGRectMake(0, 0, BNCScreenWidth, BNCScreenHeight - 43))
         self.view.addSubview(webView)
       
         let navBar = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 64))
