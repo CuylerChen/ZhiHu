@@ -23,13 +23,13 @@ class SectionViewModel: NSObject {
         }
     }
 
-    func stringConvertToSectionTitleText(str:String) -> String {
-        let formatter = NSDateFormatter.sharedInstance
+    func stringConvertToSectionTitleText(_ str:String) -> String {
+        let formatter = DateFormatter.sharedInstance
         formatter.dateFormat = "yyyyMMdd"
-        let date = formatter.dateFromString(str)
-        formatter.locale = NSLocale.init(localeIdentifier: "zh-CH")
+        let date = formatter.date(from: str)
+        formatter.locale = Locale.init(identifier: "zh-CH")
         formatter.dateFormat = "MM月dd日 EEEE"
-        let sectionTitleText = formatter.stringFromDate(date!)
+        let sectionTitleText = formatter.string(from: date!)
         return sectionTitleText
         
     }
@@ -57,17 +57,17 @@ class HomeViewModel: NSObject {
         return self.daysDataList.count
     }
     
-    func numberOfRowsInSection(section:Int) -> Int {
+    func numberOfRowsInSection(_ section:Int) -> Int {
         let svm = daysDataList[section]
         return svm.sectionDataSource.count
     }
     
-    func titleForSection(section: Int) -> NSAttributedString {
+    func titleForSection(_ section: Int) -> NSAttributedString {
         let svm = daysDataList[section]
-        return NSAttributedString.init(string: svm.sectionTitleText, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(18),NSForegroundColorAttributeName:UIColor.whiteColor()])
+        return NSAttributedString.init(string: svm.sectionTitleText, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 18),NSForegroundColorAttributeName:UIColor.white])
     }
    
-    func storyAtIndexPath(indexPath: NSIndexPath) -> StoryModel{
+    func storyAtIndexPath(_ indexPath: IndexPath) -> StoryModel{
         let svm = daysDataList[indexPath.section]
         let story = svm.sectionDataSource[indexPath.row]
         return story
@@ -76,14 +76,13 @@ class HomeViewModel: NSObject {
     
     //获取最新的新闻
     func getLatestStories() {
-        
-        Alamofire.request(.GET, "http://news-at.zhihu.com/api/4/news/latest")
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    print("JSON: \(JSON)")
-                    self.isLoading = false
-                    self.initWithLatestStories(withDictionary: JSON as! [String : AnyObject])
-                }
+        Alamofire.request("http://news-at.zhihu.com/api/4/news/latest", method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value as? [String : AnyObject]{
+                print("JSON: \(JSON)")
+                self.isLoading = false
+                self.initWithLatestStories(withDictionary: JSON )
+            }
+            
         }
     }
     
@@ -91,7 +90,7 @@ class HomeViewModel: NSObject {
         self.currentLoadDayStr = JSON["date"] as! String
         let vm = SectionViewModel.init(withDictionary: JSON )
         self.daysDataList.append(vm)
-        self.storiesID = vm.valueForKeyPath("sectionDataSource.storyID") as! [Int]
+        self.storiesID = vm.value(forKeyPath: "sectionDataSource.storyID") as! [Int]
         let stories = JSON["top_stories"] as! [AnyObject]
         for story in stories  {
             let model = StoryModel.init(withDictionary: story as! [String : AnyObject])
@@ -101,20 +100,19 @@ class HomeViewModel: NSObject {
         let first = self.top_stories.first
         let last = self.top_stories.last
         self.top_stories.append(first!)
-        self.top_stories.insert(last!, atIndex: 0)
-        NSNotificationCenter.defaultCenter().postNotificationName("LoadLatestDaily", object: nil)
+        self.top_stories.insert(last!, at: 0)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "LoadLatestDaily"), object: nil)
     }
     
     //更新最新新闻
     func updateLatestStories() {
         isLoading = true
-        Alamofire.request(.GET, "http://news-at.zhihu.com/api/4/news/latest")
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    print("JSON: \(JSON)")
-                    self.isLoading = false
-                    self.initWithUpdateLatestStories(withDictionary: JSON as! [String: AnyObject])
-                }
+        Alamofire.request("http://news-at.zhihu.com/api/4/news/latest", method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value as? [String: AnyObject]{
+                print("JSON: \(JSON)")
+                self.isLoading = false
+                self.initWithUpdateLatestStories(withDictionary: JSON)
+            }
         }
     }
     
@@ -128,7 +126,7 @@ class HomeViewModel: NSObject {
         let first = self.top_stories.first
         let last = self.top_stories.last
         self.top_stories.append(first!)
-        self.top_stories.insert(last!, atIndex: 0)
+        self.top_stories.insert(last!, at: 0)
         
         let newvm = SectionViewModel.init(withDictionary: JSON )
         let oldvm = daysDataList[0]
@@ -137,22 +135,22 @@ class HomeViewModel: NSObject {
             let new = newvm.sectionDataSource
             let old = oldvm.sectionDataSource
             
-            if new.count > old.count {
-                let newItemsCount = new.count - old.count
+            if (new?.count)! > (old?.count)! {
+                let newItemsCount = (new?.count)! - (old?.count)!
                 for i in 1...newItemsCount {
-                    let model = new[newItemsCount - i]
-                    storiesID.insert(model.storyID, atIndex: 0)
+                    let model = new?[newItemsCount - i]
+                    storiesID.insert((model?.storyID)!, at: 0)
                 }
-                daysDataList.removeAtIndex(0)
-                daysDataList.insert(newvm, atIndex: 0)
+                daysDataList.remove(at: 0)
+                daysDataList.insert(newvm, at: 0)
             }
-            NSNotificationCenter.defaultCenter().postNotificationName("UpdateLatestDaily", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "UpdateLatestDaily"), object: nil)
 
         } else {
             currentLoadDayStr = JSON["date"] as! String
             daysDataList.removeAll()
             daysDataList.append(newvm)
-            NSNotificationCenter.defaultCenter().postNotificationName("UpdateLatestDaily", object: nil,userInfo:["isNewDay":true])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "UpdateLatestDaily"), object: nil,userInfo:["isNewDay":true])
             
         }
     }
@@ -161,16 +159,14 @@ class HomeViewModel: NSObject {
     func getPreviousStories() {
         isLoading = true
         let str = "http://news-at.zhihu.com/api/4/news/before/" + currentLoadDayStr
-        Alamofire.request(.GET, str)
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    print("JSON: \(JSON)")
-                    self.isLoading = false
-                    self.initWithPreStories(withDictionary: JSON as! [String : AnyObject])
-                    
-                }
+        Alamofire.request(str, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value as? [String : AnyObject]{
+                print("JSON: \(JSON)")
+                self.isLoading = false
+                self.initWithPreStories(withDictionary: JSON )
+                
+            }
         }
-        
     }
     
     func initWithPreStories(withDictionary JSON :[String:AnyObject]) {
@@ -178,8 +174,8 @@ class HomeViewModel: NSObject {
         let vm = SectionViewModel.init(withDictionary: JSON)
         daysDataList.append(vm)
         
-        storiesID.appendContentsOf(vm.valueForKeyPath("sectionDataSource.storyID") as! [Int])
-        NSNotificationCenter.defaultCenter().postNotificationName("LoadPreviousDaily", object: nil)
+        storiesID.append(contentsOf: vm.value(forKeyPath: "sectionDataSource.storyID") as! [Int])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "LoadPreviousDaily"), object: nil)
 
     }
 }

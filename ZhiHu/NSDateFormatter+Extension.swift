@@ -8,17 +8,9 @@
 
 import Foundation
 
-extension NSDateFormatter {
-        class var sharedInstance : NSDateFormatter {
-        struct Static {
-            static var onceToken : dispatch_once_t = 0
-            static var staticInstance : NSDateFormatter? = nil
-        }
-        
-        dispatch_once(&Static.onceToken) {
-            Static.staticInstance = NSDateFormatter()
-        }
-        
-        return Static.staticInstance!
-    }
+extension DateFormatter {
+    static let sharedInstance = DateFormatter()
 }
+
+
+

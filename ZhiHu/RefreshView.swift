@@ -9,30 +9,30 @@
 import UIKit
 
 class RefreshView: UIView {
-    private var  indicatorView: UIActivityIndicatorView!
-    private var  whiteCircleLayer: CAShapeLayer!
-    private var  grayCircleLayer: CAShapeLayer!
+    fileprivate var  indicatorView: UIActivityIndicatorView!
+    fileprivate var  whiteCircleLayer: CAShapeLayer!
+    fileprivate var  grayCircleLayer: CAShapeLayer!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        indicatorView = UIActivityIndicatorView.init(frame: CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame)))
+        indicatorView = UIActivityIndicatorView.init(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         self.addSubview(indicatorView)
         
         let   radius = min(frame.size.width, frame.size.height) / 2 - 3
         grayCircleLayer = CAShapeLayer.init()
         grayCircleLayer.lineWidth = 0.5
-        grayCircleLayer.strokeColor = UIColor.grayColor().CGColor
-        grayCircleLayer.fillColor = UIColor.clearColor().CGColor
+        grayCircleLayer.strokeColor = UIColor.gray.cgColor
+        grayCircleLayer.fillColor = UIColor.clear.cgColor
         grayCircleLayer.opacity = 0
-        grayCircleLayer.path = UIBezierPath.init(ovalInRect: CGRectMake(self.width() / 2 - radius, self.height() / 2 - radius, 2 * radius, 2 * radius)).CGPath
+        grayCircleLayer.path = UIBezierPath.init(ovalIn: CGRect(x: self.width() / 2 - radius, y: self.height() / 2 - radius, width: 2 * radius, height: 2 * radius)).cgPath
         self.layer.addSublayer(grayCircleLayer)
         
         whiteCircleLayer = CAShapeLayer.init()
         whiteCircleLayer.lineWidth = 0.5
-        whiteCircleLayer.strokeColor = UIColor.grayColor().CGColor
-        whiteCircleLayer.fillColor = UIColor.clearColor().CGColor
+        whiteCircleLayer.strokeColor = UIColor.gray.cgColor
+        whiteCircleLayer.fillColor = UIColor.clear.cgColor
         whiteCircleLayer.opacity = 0
-        whiteCircleLayer.path = UIBezierPath.init(arcCenter: CGPointMake(self.width() / 2, self.height() / 2), radius: radius, startAngle: CGFloat(M_PI_2), endAngle: CGFloat(M_PI * 2.5) , clockwise: true).CGPath
+        whiteCircleLayer.path = UIBezierPath.init(arcCenter: CGPoint(x: self.width() / 2, y: self.height() / 2), radius: radius, startAngle: CGFloat(M_PI_2), endAngle: CGFloat(M_PI * 2.5) , clockwise: true).cgPath
         self.layer.addSublayer(whiteCircleLayer)
 
     }
@@ -41,7 +41,7 @@ class RefreshView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func redrawFromProgress(progress:CGFloat) {
+    func redrawFromProgress(_ progress:CGFloat) {
         if progress > 0 {
             whiteCircleLayer.opacity = 1
             grayCircleLayer.opacity = 1

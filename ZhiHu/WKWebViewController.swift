@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import WebKit
 
 class WKWebViewController: UIViewController {
     var viewmodel: StoryContentViewModel!
-    var webView: UIWebView!
+    var webView: WKWebView!
     
-    private let  BNCScreenWidth = UIScreen.mainScreen().bounds.size.width
-    private let  BNCScreenHeight = UIScreen.mainScreen().bounds.size.height
+    fileprivate let  BNCScreenWidth = UIScreen.main.bounds.size.width
+    fileprivate let  BNCScreenHeight = UIScreen.main.bounds.size.height
     
     init(WithViewModel:StoryContentViewModel) {
         super.init(nibName: nil, bundle: nil)
         viewmodel = WithViewModel
-        viewmodel.addObserver(self, forKeyPath: "storyModel", options: .New, context: nil)
+        viewmodel.addObserver(self, forKeyPath: "storyModel", options: .new, context: nil)
         viewmodel.getStoryContentWithStoryID(WithViewModel.loadedStoryID)
     }
     
@@ -38,53 +39,52 @@ class WKWebViewController: UIViewController {
     
     func initSubViews() {
 
-        webView = UIWebView.init(frame: CGRectMake(0, 0, BNCScreenWidth, BNCScreenHeight - 43))
+        webView = WKWebView.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth, height: BNCScreenHeight - 43))
         self.view.addSubview(webView)
       
-        let navBar = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 64))
+        let navBar = UIView.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth, height: 64))
         navBar.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: 0.8)
 
         self.view.addSubview(navBar)
         
-        let toolBar = UIView.init(frame: CGRectMake(0, BNCScreenHeight - 43, BNCScreenWidth, 43))
-        let backBtn = UIButton.init(frame: CGRectMake(0, 0, BNCScreenWidth / 5, 43))
-        backBtn.setImage(UIImage.init(named: "News_Navigation_Arrow"), forState: .Normal )
-        backBtn.addTarget(self, action: #selector(StoryContentViewController.backAction(_:)), forControlEvents: .TouchUpInside)
+        let toolBar = UIView.init(frame: CGRect(x: 0, y: BNCScreenHeight - 43, width: BNCScreenWidth, height: 43))
+        let backBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth / 5, height: 43))
+        backBtn.setImage(UIImage.init(named: "News_Navigation_Arrow"), for: UIControlState() )
+        backBtn.addTarget(self, action: #selector(StoryContentViewController.backAction(_:)), for: .touchUpInside)
         toolBar.addSubview(backBtn)
         
-        let nextBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5, 0, BNCScreenWidth / 5, 43))
-        nextBtn.setImage(UIImage.init(named: "News_Navigation_Next"), forState: .Normal )
-        nextBtn.addTarget(self, action: #selector(StoryContentViewController.nextStoryAction(_:)), forControlEvents: .TouchUpInside)
+        let nextBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5, y: 0, width: BNCScreenWidth / 5, height: 43))
+        nextBtn.setImage(UIImage.init(named: "News_Navigation_Next"), for: UIControlState() )
+        nextBtn.addTarget(self, action: #selector(StoryContentViewController.nextStoryAction(_:)), for: .touchUpInside)
         toolBar.addSubview(nextBtn)
         
-        let votedBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 2 , 0, BNCScreenWidth / 5, 43))
-        votedBtn.setImage(UIImage.init(named: "News_Navigation_Voted"), forState: .Normal )
+        let votedBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 2 , y: 0, width: BNCScreenWidth / 5, height: 43))
+        votedBtn.setImage(UIImage.init(named: "News_Navigation_Voted"), for: UIControlState() )
         toolBar.addSubview(votedBtn)
         
-        let sharedBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 3 , 0, BNCScreenWidth / 5, 43))
-        sharedBtn.setImage(UIImage.init(named: "News_Navigation_Share"), forState: .Normal )
+        let sharedBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 3 , y: 0, width: BNCScreenWidth / 5, height: 43))
+        sharedBtn.setImage(UIImage.init(named: "News_Navigation_Share"), for: UIControlState() )
         toolBar.addSubview(sharedBtn)
         
-        let commentdBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 4, 0, BNCScreenWidth / 5, 43))
-        commentdBtn.setImage(UIImage.init(named: "News_Navigation_Comment"), forState: .Normal )
+        let commentdBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 4, y: 0, width: BNCScreenWidth / 5, height: 43))
+        commentdBtn.setImage(UIImage.init(named: "News_Navigation_Comment"), for: UIControlState() )
         toolBar.addSubview(commentdBtn)
         
         self.view.addSubview(toolBar)
     }
     
-    func backAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backAction(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
-    func nextStoryAction(sender: UIButton) {
+    func nextStoryAction(_ sender: UIButton) {
         viewmodel.getNextStoryContent()
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
        
         if keyPath == "storyModel" {
-            
-            webView.loadRequest(NSURLRequest.init(URL: NSURL.init(string: viewmodel.share_URL())!))
+            webView.load(URLRequest.init(url: URL.init(string: viewmodel.share_URL())!))
         }
     }
 }

@@ -33,10 +33,11 @@ class StoryContentModel: NSObject {
     
     convenience init(withDictionary dic :[String:AnyObject]) {
         self.init()
-        self.setValuesForKeysWithDictionary(dic)
+        
+        self.setValuesForKeys(dic)
     }
     
-    override func setValue(value: AnyObject?, forUndefinedKey key: String) {
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
         if key == "image_source" {
             self.setValue(value, forUndefinedKey: "image_source")
         }
@@ -44,6 +45,12 @@ class StoryContentModel: NSObject {
         if key == "id" {
             self.setValue(value, forKey: "storyID")
         }
-        
+//        
+//        if key == "body" {
+//            
+//            text2 = text2.textureName.replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range:nil)
+//            self.setValue(value,forKey:"body")
+//        }
+//        
     }
 }

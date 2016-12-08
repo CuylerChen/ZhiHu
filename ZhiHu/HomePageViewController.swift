@@ -19,27 +19,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
     var  viewmodel: HomeViewModel!
     var  carouseView: CarouseView!
     
-    private let  BNCRowHeight:CGFloat = 88
-    private let  BNCSectionHeaderHeight:CGFloat = 36
-    private let  BNCScreenWidth = UIScreen.mainScreen().bounds.size.width
-    private let  BNCScreenHeight = UIScreen.mainScreen().bounds.size.height
-    private let  cellIdentifer = "HomeViewCell"
+    fileprivate let  BNCRowHeight:CGFloat = 88
+    fileprivate let  BNCSectionHeaderHeight:CGFloat = 36
+    fileprivate let  BNCScreenWidth = UIScreen.main.bounds.size.width
+    fileprivate let  BNCScreenHeight = UIScreen.main.bounds.size.height
+//    fileprivate let  cellIdentifer = "HomeViewCell"
     
     init(WithViewModel vm: HomeViewModel) {
         //super.init()
         super.init(nibName: nil, bundle: nil)
         viewmodel = vm
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.loadingLatestDaily(_:)), name: "LoadLatestDaily", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.loadingLatestDaily(_:)), name: NSNotification.Name(rawValue: "LoadLatestDaily"), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(HomePageViewController.loadingPreviousDaily(_:)), name: "LoadPreviousDaily", object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(HomePageViewController.loadingPreviousDaily(_:)), name: NSNotification.Name(rawValue: "LoadPreviousDaily"), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.updateLatestDaily(_:)), name: "UpdateLatestDaily", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.updateLatestDaily(_:)), name: NSNotification.Name(rawValue: "UpdateLatestDaily"), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomePageViewController.mainScrollViewToTop(_:)), name: "TapStatusBar", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomePageViewController.mainScrollViewToTop(_:)), name: NSNotification.Name(rawValue: "TapStatusBar"), object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,38 +54,38 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     
     func initSubView() {
-        mainTableView = UITableView.init(frame: CGRectMake(0, 20, BNCScreenWidth, UIScreen.mainScreen().bounds.size.height - 20))
+        mainTableView = UITableView.init(frame: CGRect(x: 0, y: 20, width: BNCScreenWidth, height: UIScreen.main.bounds.size.height - 20))
         mainTableView.delegate = self
         mainTableView.dataSource = self
         mainTableView.rowHeight = BNCRowHeight
-        mainTableView.tableHeaderView = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 200))
+        mainTableView.tableHeaderView = UIView.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth, height: 200))
         self.view.addSubview(mainTableView)
         
-        carouseView = CarouseView.init(frame: CGRectMake(0, -40, BNCScreenWidth, 260))
+        carouseView = CarouseView.init(frame: CGRect(x: 0, y: -40, width: BNCScreenWidth, height: 260))
         carouseView.delegate = self
         carouseView.clipsToBounds = true
         self.view.addSubview(carouseView)
 
-        navBarBackgroundView = UIView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 56))
+        navBarBackgroundView = UIView.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth, height: 56))
         navBarBackgroundView.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: 0)
         self.view.addSubview(navBarBackgroundView)
         
         newsTodayLb = UILabel.init()
-        newsTodayLb.attributedText = NSAttributedString.init(string: "今日新闻", attributes:[NSFontAttributeName:UIFont.boldSystemFontOfSize(18),NSForegroundColorAttributeName:UIColor.whiteColor() ])
+        newsTodayLb.attributedText = NSAttributedString.init(string: "今日新闻", attributes:[NSFontAttributeName:UIFont.boldSystemFont(ofSize: 18),NSForegroundColorAttributeName:UIColor.white ])
         newsTodayLb.sizeToFit()
-        newsTodayLb.center = CGPointMake(self.view.centerX(), 38)
+        newsTodayLb.center = CGPoint(x: self.view.centerX(), y: 38)
         self.view.addSubview(newsTodayLb)
         
-        refreshView = RefreshView.init(frame: CGRectMake(newsTodayLb.left() - 20, newsTodayLb.centerY() - 10, 20, 20))
+        refreshView = RefreshView.init(frame: CGRect(x: newsTodayLb.left() - 20, y: newsTodayLb.centerY() - 10, width: 20, height: 20))
         self.view.addSubview(refreshView)
         
-        let menuBtn = UIButton.init(frame: CGRectMake(16, 28, 22, 22))
-        menuBtn.setImage(UIImage.init(named: "Home_Icon"), forState: UIControlState.Normal)
-        menuBtn.addTarget(self, action: #selector(HomePageViewController.showLeftMenu), forControlEvents: UIControlEvents.TouchUpInside )
+        let menuBtn = UIButton.init(frame: CGRect(x: 16, y: 28, width: 22, height: 22))
+        menuBtn.setImage(UIImage.init(named: "Home_Icon"), for: UIControlState())
+        menuBtn.addTarget(self, action: #selector(HomePageViewController.showLeftMenu), for: UIControlEvents.touchUpInside )
         self.view.addSubview(menuBtn)
         
-        mainTableView.registerNib(UINib.init(nibName: cellIdentifer, bundle: NSBundle.mainBundle()), forCellReuseIdentifier: cellIdentifer)
-        mainTableView.registerClass(SectionTitleView.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(SectionTitleView.self))
+        mainTableView.register(HomeViewCell.self, forCellReuseIdentifier: NSStringFromClass(HomeViewCell.self))
+        mainTableView.register(SectionTitleView.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(SectionTitleView.self))
         
     }
 
@@ -95,27 +95,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
     }
     
     func showLeftMenu() {
-        let appdele = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appdele = UIApplication.shared.delegate as! AppDelegate
 
         appdele.mainVC.showLeftMenuView()
     }
     
-    func loadingLatestDaily(noti:NSNotification) {
-        let indexset = NSIndexSet.init(index: 0)
-        mainTableView.insertSections(indexset, withRowAnimation: UITableViewRowAnimation.Fade)
+    func loadingLatestDaily(_ noti:Notification) {
+        let indexset = IndexSet.init(integer: 0)
+        mainTableView.insertSections(indexset, with: UITableViewRowAnimation.fade)
         self.setTopStoriesContent()
     }
     
-    func loadingPreviousDaily(noti:NSNotification) {
-        let indexset = NSIndexSet.init(index: self.viewmodel.numberOfSections() - 1)
-        mainTableView.insertSections(indexset, withRowAnimation: UITableViewRowAnimation.Fade)
+    func loadingPreviousDaily(_ noti:Notification) {
+        let indexset = IndexSet.init(integer: self.viewmodel.numberOfSections() - 1)
+        mainTableView.insertSections(indexset, with: UITableViewRowAnimation.fade)
     }
     
-    func updateLatestDaily(noti:NSNotification) {
+    func updateLatestDaily(_ noti:Notification) {
         if ((noti.userInfo?["isNewDay"]) != nil)  {
             if noti.userInfo?["isNewDay"] as! Bool {
-                let indexset = NSIndexSet.init(index: 0)
-                mainTableView.reloadSections(indexset, withRowAnimation: UITableViewRowAnimation.Fade)
+                let indexset = IndexSet.init(integer: 0)
+                mainTableView.reloadSections(indexset, with: UITableViewRowAnimation.fade)
                 self.setTopStoriesContent()
             }
         } else {
@@ -124,8 +124,8 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
         }
     }
     
-    func mainScrollViewToTop(noti:NSNotification) {
-        mainTableView.setContentOffset(CGPointZero, animated: true)
+    func mainScrollViewToTop(_ noti:Notification) {
+        mainTableView.setContentOffset(CGPoint.zero, animated: true)
     }
     
     func setTopStoriesContent() {
@@ -134,18 +134,18 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
    
     
     //MARK - CarouseViewDelegate
-    func didSelectItemWithTag(tag: Int) {
+    func didSelectItemWithTag(_ tag: Int) {
         let story = self.viewmodel.top_stories[tag - 100]
         let vm = StoryContentViewModel.init(withCurID: story.storyID, storiesID: viewmodel.storiesID)
         let storyContentVC = StoryContentViewController.init(WithViewModel: vm)
-        let appdele = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appdele = UIApplication.shared.delegate as! AppDelegate
         appdele.mainVC.navigationController?.pushViewController(storyContentVC, animated: true)
     }
     
     
     //MARK - UIScrollViewDelegate
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isEqual(self.mainTableView) {
             let offSetY = scrollView.contentOffset.y
             if offSetY <= 0 && offSetY >= -80 {
@@ -158,27 +158,27 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
                 }
             
             
-            if -offSetY > 40 && -offSetY <= 80 && !scrollView.dragging && !viewmodel.isLoading {
+            if -offSetY > 40 && -offSetY <= 80 && !scrollView.isDragging && !viewmodel.isLoading {
                 viewmodel.updateLatestStories()
                 refreshView.stopAnimation()
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (2 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64 (2 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
                     self.refreshView.stopAnimation()
                     })
             }
             
-            carouseView.frame = CGRectMake(0, -40 - offSetY / 2,BNCScreenWidth, 260 - offSetY / 2)
+            carouseView.frame = CGRect(x: 0, y: -40 - offSetY / 2,width: BNCScreenWidth, height: 260 - offSetY / 2)
             carouseView.updateSubViewsOriginY(offSetY)
             navBarBackgroundView.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: 0)
             } else if offSetY < -80 {
-                mainTableView.contentOffset = CGPointMake(0, -80)
+                mainTableView.contentOffset = CGPoint(x: 0, y: -80)
             } else if offSetY <= 300 {
                 refreshView.redrawFromProgress(0)
-                carouseView.frame = CGRectMake(0, -40 - offSetY, BNCScreenWidth, 260)
+                carouseView.frame = CGRect(x: 0, y: -40 - offSetY, width: BNCScreenWidth, height: 260)
                 navBarBackgroundView.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: offSetY / (220 - 56))
             }
             
             //上拉刷新
-            if offSetY + BNCRowHeight > mainTableView.contentSize.height - UIScreen.mainScreen().bounds.size.height {
+            if offSetY + BNCRowHeight > mainTableView.contentSize.height - UIScreen.main.bounds.size.height {
                 if !viewmodel.isLoading {
                     viewmodel.getPreviousStories()
                     return
@@ -190,68 +190,74 @@ class HomePageViewController: UIViewController, UITableViewDelegate,UITableViewD
     
     // MARK UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewmodel.numberOfRowsInSection(section)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewmodel.numberOfSections()
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifer, forIndexPath: indexPath) as! HomeViewCell
-
-        //let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifer)! as! HomeViewCell
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = UITableViewCell.init()
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(HomeViewCell.self), for: indexPath) as! HomeViewCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         let story = viewmodel.storyAtIndexPath(indexPath)
         cell.updateUIWithStoryModel(story)
         return cell
     }
     
+    
+    
     // MARK - UITableViewDelegate
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let story = viewmodel.storyAtIndexPath(indexPath)
         let vm = StoryContentViewModel.init(withCurID: story.storyID, storiesID: viewmodel.storiesID)
         vm.getStoryContentWithStoryID(story.storyID)
         let storyContentVC = StoryContentViewController.init(WithViewModel: vm)
-        let appdele = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appdele = UIApplication.shared.delegate as! AppDelegate
         appdele.mainVC.navigationController?.pushViewController(storyContentVC, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return CGFloat.min
+            return CGFloat.leastNormalMagnitude
         }
         return BNCSectionHeaderHeight
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
         }
         
-        let headerView = tableView.dequeueReusableHeaderFooterViewWithIdentifier(NSStringFromClass(SectionTitleView.self)) as! SectionTitleView
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(SectionTitleView.self)) as! SectionTitleView
         headerView.contentView.backgroundColor = UIColor.init(red: 60 / 255, green: 198 / 255, blue: 253 / 255, alpha: 1)
         headerView.textLabel?.attributedText = viewmodel.titleForSection(section)
         return headerView
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if section == 0 {
             navBarBackgroundView.setHeight(56)
             newsTodayLb.alpha = 1
         }
     }
     
-    func tableView(tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
         if section == 0 {
             navBarBackgroundView.setHeight(20)
             newsTodayLb.alpha = 0
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100.0
     }
     
 

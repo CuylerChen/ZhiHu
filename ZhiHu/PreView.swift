@@ -13,12 +13,12 @@ class PreView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
         circleLayer = CAShapeLayer.init()
-        circleLayer.fillColor = UIColor.clearColor().CGColor
-        circleLayer.strokeColor = UIColor.grayColor().CGColor
+        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.strokeColor = UIColor.gray.cgColor
         circleLayer.lineWidth = 10
-        circleLayer.path = UIBezierPath.init(arcCenter: self.center, radius: 80, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true).CGPath
+        circleLayer.path = UIBezierPath.init(arcCenter: self.center, radius: 80, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true).cgPath
         circleLayer.lineCap = kCALineCapRound
         self.layer.addSublayer(circleLayer)
         loadingAnimation()
@@ -42,7 +42,7 @@ class PreView: UIView {
         group.animations = [strokeStartAnimation,strokeEndAnimation]
         group.repeatCount = 10
         group.duration = 2.4
-        circleLayer.addAnimation(group, forKey: nil)
+        circleLayer.add(group, forKey: nil)
         
     }
 }

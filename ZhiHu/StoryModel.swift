@@ -27,10 +27,10 @@ class StoryModel: NSObject {
     
     convenience init(withDictionary dic :[String:AnyObject]) {
         self.init()
-        self.setValuesForKeysWithDictionary(dic)
+        self.setValuesForKeys(dic)
     }
     
-    override func setValue(value: AnyObject?, forUndefinedKey key: String) {
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
         if key == "id" {
             self.setValue(value, forKey: "storyID")
         }

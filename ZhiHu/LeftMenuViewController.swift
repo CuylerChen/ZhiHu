@@ -16,7 +16,7 @@ class LeftMenuViewController: UIViewController {
     var othersList: [ThemeItemModel]! = []
     var themeItems: [ThemeItemModel]! = []
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         subscribedList = []
         othersList = []
@@ -33,43 +33,43 @@ class LeftMenuViewController: UIViewController {
     }
     
     func getThemeList() {
-        Alamofire.request(.GET, "http://news-at.zhihu.com/api/4/themes")
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    let  subArr = JSON["subscribed"] as! [[String:AnyObject]]
-                    for dic in subArr {
-                        let model = ThemeItemModel.init(withDictionary: dic)
-                        self.subscribedList.append(model)
-                    }
-                    
-                    let othArr = JSON["others"] as! [[String:AnyObject]]
-                    for dic in othArr {
-                        let model = ThemeItemModel.init(withDictionary: dic)
-                        self.othersList.append(model)
-                    }
-                    self.setMentItems()
+        Alamofire.request("http://news-at.zhihu.com/api/4/themes", method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value as? [String: AnyObject] {
+                let  subArr = JSON["subscribed"] as! [[String:AnyObject]]
+                for dic in subArr {
+                    let model = ThemeItemModel.init(withDictionary: dic)
+                    self.subscribedList.append(model)
                 }
+                
+                let othArr = JSON["others"] as! [[String:AnyObject]]
+                for dic in othArr {
+                    let model = ThemeItemModel.init(withDictionary: dic)
+                    self.othersList.append(model)
+                }
+                self.setMentItems()
+            }
+
         }
     }
     
     func setMentItems() {
-        mainScrollView.contentSize = CGSizeMake(0, CGFloat(1 + subscribedList.count + othersList.count ) * 44)
-        let homeItem = NSBundle.mainBundle().loadNibNamed("TMItemView", owner: self, options: nil).first as! TMItemView
+        mainScrollView.contentSize = CGSize(width: 0, height: CGFloat(1 + subscribedList.count + othersList.count ) * 44)
+        let homeItem = Bundle.main.loadNibNamed("TMItemView", owner: self, options: nil)?.first as! TMItemView
         
-        homeItem.frame = CGRectMake(0, 0, mainScrollView.width(), 44)
+        homeItem.frame = CGRect(x: 0, y: 0, width: mainScrollView.width(), height: 44)
         homeItem.menuTitleLb.text = "首页";
         homeItem.menuImaView.image = UIImage.init(named: "Menu_Icon_Home")
         homeItem.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(LeftMenuViewController.showHome(_:))))
         mainScrollView.addSubview(homeItem)
         
         var tempHeight = homeItem.height()
-        themeItems.appendContentsOf(subscribedList)
-        themeItems.appendContentsOf(othersList)
+        themeItems.append(contentsOf: subscribedList)
+        themeItems.append(contentsOf: othersList)
         for index in 0...themeItems.count - 1 {
-            let itemView = NSBundle.mainBundle().loadNibNamed("TMItemView", owner: self, options: nil).first as! TMItemView
-            itemView.frame = CGRectMake(0 , tempHeight, mainScrollView.width(),44)
+            let itemView = Bundle.main.loadNibNamed("TMItemView", owner: self, options: nil)?.first as! TMItemView
+            itemView.frame = CGRect(x: 0 , y: tempHeight, width: mainScrollView.width(),height: 44)
             itemView.menuImaView.removeFromSuperview()
-            itemView.addConstraints([NSLayoutConstraint.init(item: itemView.menuTitleLb, attribute: .Leading, relatedBy: .Equal, toItem: itemView, attribute: .Leading, multiplier: 1, constant: 4)])
+            itemView.addConstraints([NSLayoutConstraint.init(item: itemView.menuTitleLb, attribute: .leading, relatedBy: .equal, toItem: itemView, attribute: .leading, multiplier: 1, constant: 4)])
             
             let model = themeItems[index]
             itemView.menuTitleLb.text = model.name
@@ -82,18 +82,18 @@ class LeftMenuViewController: UIViewController {
     }
     
 
-    func showHome(recognizer :UIGestureRecognizer) {
-        let appdele = UIApplication.sharedApplication().delegate as! AppDelegate
+    func showHome(_ recognizer :UIGestureRecognizer) {
+        let appdele = UIApplication.shared.delegate as! AppDelegate
         appdele.mainVC.showMainView()
     }
     
-    func didSelectedMenuItem(recognizer :UIGestureRecognizer) {
+    func didSelectedMenuItem(_ recognizer :UIGestureRecognizer) {
         let model = themeItems[(recognizer.view?.tag)!] 
         let dailyThemeVC = DailyThemesViewController.init()
         dailyThemeVC.themeID = model.themeID
         let subNavigationVC = UINavigationController.init(rootViewController: dailyThemeVC)
-        let appdele = UIApplication.sharedApplication().delegate as! AppDelegate
-        appdele.mainVC.presentViewController(subNavigationVC, animated: true, completion: nil)
+        let appdele = UIApplication.shared.delegate as! AppDelegate
+        appdele.mainVC.present(subNavigationVC, animated: true, completion: nil)
 
     }
 }

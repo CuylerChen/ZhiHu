@@ -9,6 +9,8 @@
 import UIKit
 import Alamofire
 
+
+
 class StoryContentViewModel: NSObject {
     dynamic var storyModel: StoryContentModel!
     var loadedStoryID: Int = 0
@@ -33,7 +35,7 @@ class StoryContentViewModel: NSObject {
     }
     
     func titleAttText() -> NSAttributedString {
-         return NSAttributedString.init(string: storyModel.title, attributes: [NSFontAttributeName:UIFont.boldSystemFontOfSize(18),NSForegroundColorAttributeName:UIColor.whiteColor()])
+         return NSAttributedString.init(string: storyModel.title, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 18),NSForegroundColorAttributeName:UIColor.white])
     }
     
     func imaSourceText() -> String {
@@ -42,8 +44,8 @@ class StoryContentViewModel: NSObject {
     }
     
     func htmlStr() ->String {
-        let htmlStr = "<html><head><link rel=\"stylesheet\" href=\(storyModel.css[0])></head><body>\(storyModel.body)</body></html>"
-       return htmlStr
+        let htmlStr = "<html><head><link rel=\"stylesheet\" href=\(storyModel.css[0])></head><body>\(storyModel.body!)</body></html>"
+        return htmlStr
     }
     
     func share_URL() -> String {
@@ -59,31 +61,32 @@ class StoryContentViewModel: NSObject {
         return storyModel.recommenders
     }
     
-    func getStoryContentWithStoryID(storyID:Int) {
+    func getStoryContentWithStoryID(_ storyID:Int) {
         let str = "http://news-at.zhihu.com/api/4/news/\(storyID)"
-        Alamofire.request(.GET, str )
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    self.storyModel = StoryContentModel.init(withDictionary: JSON as! [String:AnyObject])
-                    print("JSON: \(JSON)")
-                    self.loadedStoryID = storyID
-                    //NSNotificationCenter.defaultCenter().postNotificationName("loadNewPages", object: nil)
-                }
+        
+        Alamofire.request(str, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value {
+                self.storyModel = StoryContentModel.init(withDictionary: JSON as! [String:AnyObject])
+                print("JSON: \(JSON)")
+                self.loadedStoryID = storyID
+                //NSNotificationCenter.defaultCenter().postNotificationName("loadNewPages", object: nil)
+            }
         }
         
     }
     
+    
     func getPreviousStoryContent() {
-        let index = storiesID.indexOf(loadedStoryID)
-        if index >= 1 {
+        let index = storiesID.index(of: loadedStoryID)
+        if index! >= 1 {
             let preStoryID = storiesID[index! - 1]
             getStoryContentWithStoryID(preStoryID)
         }
     }
     
     func getNextStoryContent() {
-        let index = storiesID.indexOf(loadedStoryID)
-        if index < storiesID.count - 1 {
+        let index = storiesID.index(of: loadedStoryID)
+        if index! < storiesID.count - 1 {
             let nextStoryID = storiesID[index! + 1]
             getStoryContentWithStoryID(nextStoryID)
         }

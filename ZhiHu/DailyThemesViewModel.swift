@@ -24,21 +24,21 @@ class DailyThemesViewModel: NSObject {
         editors = []
     }
     
-    func getDailyThemesDataWithThemeID(themeID: Int) {
+    func getDailyThemesDataWithThemeID(_ themeID: Int) {
         let str = "http://news-at.zhihu.com/api/4/theme/\(themeID)"
-        Alamofire.request(.GET, str )
-            .responseJSON { response in
-                if let JSON = response.result.value {
-                    let stories = JSON["stories"] as! [AnyObject]
-                    for story in stories  {
-                        let model = StoryModel.init(withDictionary: story as! [String : AnyObject])
-                        self.stories.append(model)
-                    }
-                    self.imageURLStr = JSON["background"] as! String
-                    self.name = JSON["name"] as! String
-                    self.editors = JSON["editors"] as! [[String:AnyObject]]
+        Alamofire.request(str, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { response in
+            if let JSON = response.result.value as? [String: Any] {
+                let stories = JSON["stories"] as! [AnyObject]
+                for story in stories  {
+                    let model = StoryModel.init(withDictionary: story as! [String : AnyObject])
+                    self.stories.append(model)
                 }
+                self.imageURLStr = JSON["background"]  as! String
+                self.name = JSON["name"] as! String
+                self.editors = JSON["editors"] as! [[String:AnyObject]]
+            }
         }
+        
     }
     
 }

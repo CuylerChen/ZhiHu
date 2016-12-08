@@ -14,7 +14,7 @@ extension UIView {
         return self.frame.origin.x
     }
     
-    func setLeft(left: CGFloat) {
+    func setLeft(_ left: CGFloat) {
         self.frame.origin.x = left
     }
     
@@ -22,7 +22,7 @@ extension UIView {
         return self.frame.origin.x + self.frame.size.width
     }
     
-    func setRight(right: CGFloat) {
+    func setRight(_ right: CGFloat) {
         self.frame.origin.x = right - self.frame.size.width
     }
    
@@ -30,7 +30,7 @@ extension UIView {
         return self.frame.origin.y
     }
     
-    func setTop(top: CGFloat) {
+    func setTop(_ top: CGFloat) {
         self.frame.origin.y = top
     }
     
@@ -39,7 +39,7 @@ extension UIView {
         return self.frame.origin.y + self.frame.size.height
     }
     
-    func setBottom(bottom: CGFloat) {
+    func setBottom(_ bottom: CGFloat) {
         self.frame.origin.y = bottom - self.frame.size.height
     }
     
@@ -47,7 +47,7 @@ extension UIView {
         return self.frame.size.width
     }
     
-    func setWidth(width: CGFloat) {
+    func setWidth(_ width: CGFloat) {
         self.frame.size.width = width
     }
     
@@ -55,7 +55,7 @@ extension UIView {
         return self.frame.size.height
     }
     
-    func setHeight(height: CGFloat) {
+    func setHeight(_ height: CGFloat) {
         self.frame.size.height = height
     }
     
@@ -63,16 +63,16 @@ extension UIView {
         return self.center.x
     }
     
-    func setCenterX(centerX:CGFloat) {
-         self.center = CGPointMake(centerX, self.center.y);
+    func setCenterX(_ centerX:CGFloat) {
+         self.center = CGPoint(x: centerX, y: self.center.y);
     }
     
     func centerY() -> CGFloat{
         return self.center.y
     }
     
-    func setCenterY(centerY:CGFloat) {
-        self.center = CGPointMake(self.center.x, centerY);
+    func setCenterY(_ centerY:CGFloat) {
+        self.center = CGPoint(x: self.center.x, y: centerY);
     }
     
 }

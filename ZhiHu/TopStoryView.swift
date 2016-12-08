@@ -14,8 +14,8 @@ class TopStoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView = UIImageView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 300))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 300))
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
         self.addSubview(imageView)
         
         label = UILabel.init()

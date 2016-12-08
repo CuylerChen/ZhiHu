@@ -16,8 +16,8 @@ class MainViewController: UIViewController {
     var mainView:     UIView!
     var tap:          UITapGestureRecognizer!
     
-    private let  BNCScreenWidth = UIScreen.mainScreen().bounds.size.width
-    private let  BNCScreenHeight = UIScreen.mainScreen().bounds.size.height
+    fileprivate let  BNCScreenWidth = UIScreen.main.bounds.size.width
+    fileprivate let  BNCScreenHeight = UIScreen.main.bounds.size.height
     
     init (withHomePage:HomePageViewController,andWithLeft left:LeftMenuViewController) {
         super.init(nibName: nil, bundle: nil)
@@ -34,11 +34,11 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         distance = 0
         leftMenuView = leftMenuViewController.view;
-        leftMenuView.frame  = UIScreen.mainScreen().bounds
-        leftMenuView.transform = CGAffineTransformConcat(CGAffineTransformScale(CGAffineTransformIdentity,1,1),CGAffineTransformTranslate(CGAffineTransformIdentity, BNCScreenWidth * 0.6, 0))
+        leftMenuView.frame  = UIScreen.main.bounds
+        leftMenuView.transform = CGAffineTransform.identity.scaledBy(x: 1,y: 1).concatenating(CGAffineTransform.identity.translatedBy(x: BNCScreenWidth * 0.6, y: 0))
         self.view.addSubview(leftMenuView)
         
-        mainView = UIView.init(frame: UIScreen.mainScreen().bounds)
+        mainView = UIView.init(frame: UIScreen.main.bounds)
         mainView.addSubview(homeViewController.view)
         self.view.addSubview(mainView)
         
@@ -49,26 +49,26 @@ class MainViewController: UIViewController {
         
     }
     
-    func tap(recongizer:UIPanGestureRecognizer) {
+    func tap(_ recongizer:UIPanGestureRecognizer) {
         showMainView()
     }
     
     func showMainView(){
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseInOut, animations: {
-            self.mainView.transform = CGAffineTransformIdentity
-            self.leftMenuView.transform = CGAffineTransformConcat(CGAffineTransformScale(CGAffineTransformIdentity,1,1),CGAffineTransformTranslate(CGAffineTransformIdentity,0,0))
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
+            self.mainView.transform = CGAffineTransform.identity
+            self.leftMenuView.transform = CGAffineTransform.identity.scaledBy(x: 1,y: 1).concatenating(CGAffineTransform.identity.translatedBy(x: 0,y: 0))
             
             }, completion: { (finished)  in
-               self.distance = 0
+                self.distance = 0
                 self.mainView.removeGestureRecognizer(self.tap)
         })
 
     }
     
     func showLeftMenuView() {
-        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseInOut, animations: {
-            self.leftMenuView.transform = CGAffineTransformIdentity
-            self.mainView.transform = CGAffineTransformConcat(CGAffineTransformScale(CGAffineTransformIdentity,1,1),CGAffineTransformTranslate(CGAffineTransformIdentity,self.BNCScreenWidth * 0.6,0))
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions(), animations: {
+            self.leftMenuView.transform = CGAffineTransform.identity
+            self.mainView.transform = CGAffineTransform.identity.scaledBy(x: 1,y: 1).concatenating(CGAffineTransform.identity.translatedBy(x: self.BNCScreenWidth * 0.6,y: 0))
             
             }, completion: { (finished)  in
                 self.distance = self.BNCScreenWidth * 0.6
@@ -76,20 +76,19 @@ class MainViewController: UIViewController {
         })
     }
     
-    func pan(recongizer:UIPanGestureRecognizer) {
-        let moveX = recongizer.translationInView(self.view).x
+    func pan(_ recongizer:UIPanGestureRecognizer) {
+        let moveX = recongizer.translation(in: self.view).x
         let truedistance = distance + moveX
         let percent = truedistance / (BNCScreenWidth * 0.6)
         
         if truedistance >= 0 && truedistance <= BNCScreenWidth * 0.6 {
-            mainView.transform = CGAffineTransformConcat(CGAffineTransformScale(CGAffineTransformIdentity,1,1 ),CGAffineTransformTranslate(CGAffineTransformIdentity,truedistance,0))
+            mainView.transform = CGAffineTransform.identity.scaledBy(x: 1,y: 1 ).concatenating(CGAffineTransform.identity.translatedBy(x: truedistance,y: 0))
             
-            leftMenuView.transform = CGAffineTransformConcat(CGAffineTransformScale(CGAffineTransformIdentity,1,1),
-            CGAffineTransformTranslate(CGAffineTransformIdentity,   BNCScreenWidth * 0.6 * (percent - 1),0))
+            leftMenuView.transform = CGAffineTransform.identity.scaledBy(x: 1,y: 1).concatenating(CGAffineTransform.identity.translatedBy(x: BNCScreenWidth * 0.6 * (percent - 1),y: 0))
             
         }
         
-        if recongizer.state == .Ended {
+        if recongizer.state == .ended {
             if truedistance < BNCScreenWidth * 0.3 {
                 showMainView()
             } else {

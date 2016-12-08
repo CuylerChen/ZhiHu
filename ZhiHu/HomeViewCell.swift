@@ -10,30 +10,44 @@ import UIKit
 
 class HomeViewCell: UITableViewCell {
 
-    @IBOutlet weak var titleLab: UILabel!
-    @IBOutlet weak var imaView: UIImageView!
-    @IBOutlet weak var warnImageView: UIImageView!
-    @IBOutlet weak var imaViewWidthConstraint: NSLayoutConstraint!
+    var titleLab: UILabel!
+    var imaView: UIImageView!
+    var warnImageView: UIImageView!
     
     var  storyModel: StoryModel!
     
-    func updateUIWithStoryModel(model: StoryModel) {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        titleLab = UILabel.init(frame: CGRect.init(x: 10, y: 10 , width: self.bounds.size.width - 110, height: 80 ))
+        imaView = UIImageView.init(frame: CGRect.init(x: self.bounds.size.width - 100, y: 10, width: 80, height: 80))
+        warnImageView = UIImageView.init(frame: CGRect.init(x: self.bounds.size.width - 50, y: 70, width: 40, height: 20))
+        
+        self.contentView.addSubview(titleLab)
+        self.contentView.addSubview(imaView)
+        self.contentView.addSubview(warnImageView)
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateUIWithStoryModel(_ model: StoryModel) {
         storyModel = model
         titleLab.text = model.title;
-        if model.images.isEmpty {
-            imaViewWidthConstraint.constant = 0
-        } else {
+        if !model.images.isEmpty {
             let imageUrl = model.images.first!
-            imaView.af_setImageWithURL(NSURL.init(string: imageUrl)!)
+            imaView?.af_setImage(withURL: URL.init(string: imageUrl)!)
         }
-        
+
         if storyModel.isMultipic {
             if  (warnImageView.image != nil)  {
                 warnImageView.image = UIImage.init(named: "Home_Morepic")
             }
-            warnImageView.hidden = false
+            warnImageView.isHidden = false
         } else {
-            warnImageView.hidden = true
+            warnImageView.isHidden = true
         }
     }
     
@@ -41,11 +55,9 @@ class HomeViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    /*required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }*/
+    
 }

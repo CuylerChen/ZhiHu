@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import WebKit
 
 class StoryContentViewController: UIViewController,UIScrollViewDelegate {
 
@@ -15,17 +16,17 @@ class StoryContentViewController: UIViewController,UIScrollViewDelegate {
     var headerView: UIView!
     var titleLab: UILabel!
     var imaSourceLab: UILabel!
-    var webView:      UIWebView!
+    var webView:      WKWebView!
     var preView: PreView!
     var viewmodel: StoryContentViewModel!
     
-    private let  BNCScreenWidth = UIScreen.mainScreen().bounds.size.width
-    private let  BNCScreenHeight = UIScreen.mainScreen().bounds.size.height
+    fileprivate let  BNCScreenWidth = UIScreen.main.bounds.size.width
+    fileprivate let  BNCScreenHeight = UIScreen.main.bounds.size.height
     
     init(WithViewModel: StoryContentViewModel) {
         super.init(nibName: nil, bundle: nil)
         viewmodel = WithViewModel
-        viewmodel.addObserver(self, forKeyPath: "storyModel", options: .New, context: nil)
+        viewmodel.addObserver(self, forKeyPath: "storyModel", options: .new, context: nil)
         viewmodel.getStoryContentWithStoryID(WithViewModel.loadedStoryID)
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StoryContentViewController.loadNewPages(_:)), name: "loadNewPages", object: nil)
@@ -47,112 +48,112 @@ class StoryContentViewController: UIViewController,UIScrollViewDelegate {
     func initSubviews() {
         
         self.automaticallyAdjustsScrollViewInsets = false
-        webView = UIWebView.init(frame: CGRectMake(0, 20, BNCScreenWidth, BNCScreenHeight - 63))
+        webView = WKWebView.init(frame: CGRect(x: 0, y: 20, width: BNCScreenWidth, height: BNCScreenHeight - 63))
         webView.scrollView.delegate = self
-        webView.backgroundColor = UIColor.whiteColor()
+        webView.backgroundColor = UIColor.white
         self.view.addSubview(webView)
         
-        headerView = UIView.init(frame: CGRectMake(0, -40, BNCScreenWidth, 260))
+        headerView = UIView.init(frame: CGRect(x: 0, y: -40, width: BNCScreenWidth, height: 260))
         headerView.clipsToBounds = true
         self.view.addSubview(headerView)
         
-        imageView = UIImageView.init(frame: CGRectMake(0, 0, BNCScreenWidth, 300))
-        imageView.contentMode = .ScaleAspectFill
+        imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth, height: 300))
+        imageView.contentMode = .scaleAspectFill
         headerView.addSubview(imageView)
         
-        titleLab = UILabel.init(frame: CGRectZero)
+        titleLab = UILabel.init(frame: CGRect.zero)
         titleLab.numberOfLines = 0
         headerView.addSubview(titleLab)
         
         
-        imaSourceLab = UILabel.init(frame: CGRectMake(10, 240, BNCScreenWidth - 20, 20))
-        imaSourceLab.textAlignment = .Right
-        imaSourceLab.font = UIFont.systemFontOfSize(12)
-        imaSourceLab.textColor = UIColor.whiteColor()
+        imaSourceLab = UILabel.init(frame: CGRect(x: 10, y: 240, width: BNCScreenWidth - 20, height: 20))
+        imaSourceLab.textAlignment = .right
+        imaSourceLab.font = UIFont.systemFont(ofSize: 12)
+        imaSourceLab.textColor = UIColor.white
         headerView.addSubview(imaSourceLab)
         
-        let toolBar = UIView.init(frame: CGRectMake(0, BNCScreenHeight - 43, BNCScreenWidth, 43))
-        let backBtn = UIButton.init(frame: CGRectMake(0, 0, BNCScreenWidth / 5, 43))
-        backBtn.setImage(UIImage.init(named: "News_Navigation_Arrow"), forState: .Normal )
-        backBtn.addTarget(self, action: #selector(StoryContentViewController.backAction(_:)), forControlEvents: .TouchUpInside)
+        let toolBar = UIView.init(frame: CGRect(x: 0, y: BNCScreenHeight - 43, width: BNCScreenWidth, height: 43))
+        let backBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: BNCScreenWidth / 5, height: 43))
+        backBtn.setImage(UIImage.init(named: "News_Navigation_Arrow"), for: UIControlState() )
+        backBtn.addTarget(self, action: #selector(StoryContentViewController.backAction(_:)), for: .touchUpInside)
         toolBar.addSubview(backBtn)
         
-        let nextBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5, 0, BNCScreenWidth / 5, 43))
-        nextBtn.setImage(UIImage.init(named: "News_Navigation_Next"), forState: .Normal )
-        nextBtn.addTarget(self, action: #selector(StoryContentViewController.nextStoryAction(_:)), forControlEvents: .TouchUpInside)
+        let nextBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5, y: 0, width: BNCScreenWidth / 5, height: 43))
+        nextBtn.setImage(UIImage.init(named: "News_Navigation_Next"), for: UIControlState() )
+        nextBtn.addTarget(self, action: #selector(StoryContentViewController.nextStoryAction(_:)), for: .touchUpInside)
         toolBar.addSubview(nextBtn)
         
-        let votedBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 2 , 0, BNCScreenWidth / 5, 43))
-        votedBtn.setImage(UIImage.init(named: "News_Navigation_Voted"), forState: .Normal )
+        let votedBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 2 , y: 0, width: BNCScreenWidth / 5, height: 43))
+        votedBtn.setImage(UIImage.init(named: "News_Navigation_Voted"), for: UIControlState() )
         toolBar.addSubview(votedBtn)
         
-        let sharedBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 3 , 0, BNCScreenWidth / 5, 43))
-        sharedBtn.setImage(UIImage.init(named: "News_Navigation_Share"), forState: .Normal )
+        let sharedBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 3 , y: 0, width: BNCScreenWidth / 5, height: 43))
+        sharedBtn.setImage(UIImage.init(named: "News_Navigation_Share"), for: UIControlState() )
         toolBar.addSubview(sharedBtn)
         
-        let commentdBtn = UIButton.init(frame: CGRectMake(BNCScreenWidth / 5 * 4, 0, BNCScreenWidth / 5, 43))
-        commentdBtn.setImage(UIImage.init(named: "News_Navigation_Comment"), forState: .Normal )
+        let commentdBtn = UIButton.init(frame: CGRect(x: BNCScreenWidth / 5 * 4, y: 0, width: BNCScreenWidth / 5, height: 43))
+        commentdBtn.setImage(UIImage.init(named: "News_Navigation_Comment"), for: UIControlState() )
         toolBar.addSubview(commentdBtn)
         
         self.view.addSubview(toolBar)
         
-        preView = PreView.init(frame: UIScreen.mainScreen().bounds)
+        preView = PreView.init(frame: UIScreen.main.bounds)
         self.view.addSubview(preView)
         
     }
     
-    func backAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backAction(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
-    func nextStoryAction(sender: UIButton) {
+    func nextStoryAction(_ sender: UIButton) {
         viewmodel.getNextStoryContent()
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offSetY = scrollView.contentOffset.y
         if -offSetY <= 80 && -offSetY >= 0 {
-            headerView.frame = CGRectMake(0, -40 - offSetY / 2, BNCScreenWidth, 260 - offSetY / 2)
+            headerView.frame = CGRect(x: 0, y: -40 - offSetY / 2, width: BNCScreenWidth, height: 260 - offSetY / 2)
             imaSourceLab.setTop(240 - offSetY / 2)
             titleLab.setBottom(imaSourceLab.bottom() - 20)
-            if -offSetY > 40 && !webView.scrollView.dragging {
+            if -offSetY > 40 && !webView.scrollView.isDragging {
                 viewmodel.getPreviousStoryContent()
             }
         } else if -offSetY > 80 {
-            webView.scrollView.contentOffset = CGPointMake(0 , -80)
+            webView.scrollView.contentOffset = CGPoint(x: 0 , y: -80)
         } else if offSetY <= 300 {
-            headerView.frame = CGRectMake(0, -40 - offSetY, BNCScreenWidth, 260)
+            headerView.frame = CGRect(x: 0, y: -40 - offSetY, width: BNCScreenWidth, height: 260)
         }
         
-        if offSetY + BNCScreenHeight > scrollView.contentSize.height + 160 && !webView.scrollView.dragging {
+        if offSetY + BNCScreenHeight > scrollView.contentSize.height + 160 && !webView.scrollView.isDragging {
             viewmodel.getNextStoryContent()
         }
     }
     
-    func loadNewPages(noti:NSNotification) {
-        imageView.af_setImageWithURL(NSURL.init(string: viewmodel.ImageURLString())!)
-        let size = viewmodel.titleAttText().boundingRectWithSize(CGSizeMake(BNCScreenWidth - 30, 60), options: NSStringDrawingOptions.UsesLineFragmentOrigin.union(NSStringDrawingOptions.UsesFontLeading), context: nil).size
-        titleLab.frame = CGRectMake(15, headerView.frame.size.height - 20 - size.height, BNCScreenWidth - 30, size.height)
+    func loadNewPages(_ noti:Notification) {
+        imageView.af_setImage(withURL: URL.init(string: viewmodel.ImageURLString())!)
+        let size = viewmodel.titleAttText().boundingRect(with: CGSize(width: BNCScreenWidth - 30, height: 60), options: NSStringDrawingOptions.usesLineFragmentOrigin.union(NSStringDrawingOptions.usesFontLeading), context: nil).size
+        titleLab.frame = CGRect(x: 15, y: headerView.frame.size.height - 20 - size.height, width: BNCScreenWidth - 30, height: size.height)
         titleLab.attributedText = viewmodel.titleAttText()
         imaSourceLab.text = viewmodel.imaSourceText()
         webView.loadHTMLString(viewmodel.htmlStr(), baseURL: nil)
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64 (1 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
             self.preView.removeFromSuperview()
         })
 
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "storyModel" {
-            imageView.af_setImageWithURL(NSURL.init(string: viewmodel.ImageURLString())!)
-            let size = viewmodel.titleAttText().boundingRectWithSize(CGSizeMake(BNCScreenWidth - 30, 60), options: NSStringDrawingOptions.UsesLineFragmentOrigin.union(NSStringDrawingOptions.UsesFontLeading), context: nil).size
-            titleLab.frame = CGRectMake(15, headerView.frame.size.height - 20 - size.height, BNCScreenWidth - 30, size.height)
+            imageView.af_setImage(withURL: URL.init(string: viewmodel.ImageURLString() )!)
+            let size = viewmodel.titleAttText().boundingRect(with: CGSize(width: BNCScreenWidth - 30, height: 60), options: NSStringDrawingOptions.usesLineFragmentOrigin.union(NSStringDrawingOptions.usesFontLeading), context: nil).size
+            titleLab.frame = CGRect(x: 15, y: headerView.frame.size.height - 20 - size.height, width: BNCScreenWidth - 30, height: size.height)
             titleLab.attributedText = viewmodel.titleAttText()
             imaSourceLab.text = viewmodel.imaSourceText()
             webView.loadHTMLString(viewmodel.htmlStr(), baseURL: nil)
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64 (1 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
                 self.preView.removeFromSuperview()
             })
 
